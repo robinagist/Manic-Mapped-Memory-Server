@@ -5,7 +5,7 @@ from sanic.exceptions import SanicException
 
 from utils.utils import start_clock, end_clock
 from utils.server import server_config, check_required
-from utils.data import find, create, index, define_columns_using_delimiter, define_lastline_newline
+from utils.data import create, index, define_columns_using_delimiter, define_lastline_newline, find as ffind
 
 
 import json, time
@@ -23,15 +23,10 @@ uses python asynch methods in Sanic
 # get the server configuration
 config = server_config()
 
-# hand lookup index
-_h = dict()
-# hashed hand lookup index
-_hh = dict()
-# hashed hand score lookup index
-_hhs = dict()
-
 # memory mapped file reference
 _mm = None
+
+# where the created indices are stored
 _indices = dict()
 
 app = Sanic()
@@ -43,7 +38,7 @@ async def test(request):
 
 
 @app.route("/f", methods=['GET'])
-async def get_score_by_hand(request):
+async def find(request):
 
     req_args = request.raw_args
     idx, st = check_required(req_args)
@@ -56,11 +51,11 @@ async def get_score_by_hand(request):
     if idx not in _indices:
         msg = "{{'manic':'malformed query (index {} not found)' }}".format(idx)
         return response.json(msg, 400)
-    s_idx = _indices[s_idx]
+    s_idx = _indices[idx]
 
     begin_request_time = start_clock()
     # returns the score for the hand
-    resp = find(_mm, s_idx, st)
+    resp = ffind(_mm, s_idx, st)
     exec_time = end_clock(begin_request_time)
 
     if not resp:
@@ -83,7 +78,7 @@ if __name__ == "__main__":
     _mm = create(filename)
 
     # define the column layout and indexing
-    cols = ["hand", None, "hh", "hhs"]
+    cols = ["hand", "score", "hh", "hhs"]
     cis = define_columns_using_delimiter(cols, ",")
     define_lastline_newline(cis, n=True)
 
