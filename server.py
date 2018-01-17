@@ -10,12 +10,8 @@ from utils.data import create, index, define_columns_using_delimiter, define_las
 
 import json, time
 '''
-Manic - hella fast mapped memory lookup server
-
-v 0.00aa
-
+Manic - hella fast mapped memory lookup server  v 0.00aa
 (c) 2018 - kaotik.io - All Rights Reserved
-THIS CODE NOT FOR DISTRIBUTION
 
 uses python asynch methods in Sanic
 '''
@@ -47,7 +43,6 @@ async def find(request):
         msg = st
         return response.json(msg, 400)
 
-    s_idx = None
     if idx not in _indices:
         msg = "{{'manic':'malformed query (index {} not found)' }}".format(idx)
         return response.json(msg, 400)
