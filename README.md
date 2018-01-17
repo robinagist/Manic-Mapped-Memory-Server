@@ -1,5 +1,5 @@
 
-#Manic - Hella High Performance Memory Mapped DB Server
+Manic - Hella High Performance Memory Mapped DB Server
 
 Manic is a asynchronous REST server that allows super fast querying of large memory mapped files, giving O(1) lookup times on the order of just a dozen or so microseconds, using standard desktop hardware.
 
