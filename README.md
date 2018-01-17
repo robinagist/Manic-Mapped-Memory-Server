@@ -7,6 +7,8 @@ Manic runs on top of Sanic, a super fast, flask-like async platform for Python h
 
 Even more, Manic allows you to write protect the file in memory, and check a previously calculated SHA256 of the text file, against your own SHA256, before it is loaded into a memory map.
 
+Manic was extracted from an Ethereum oracle project and made open source under an MIT license.  It is still a work in progress.
+
 At the moment, Manic will only ingest and index delimited text files.
 
 ##Configuration is simple:
