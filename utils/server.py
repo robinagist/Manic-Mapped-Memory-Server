@@ -1,29 +1,26 @@
 import configparser
-from sanic import Sanic, response
-from sanic.response import json
+import json
+
+from sanic import Sanic, response, request
+# from sanic.response import json
 
 def server_config():
-    config = configparser.ConfigParser()
-    cf = "manic.conf"
+ #   try:
+    with open('/Users/robin/PycharmProjects/manic/config.json') as configfile:
+        data = json.load(configfile)
+#    except:
+#        raise Exception("missing configuration file")
+    return data
 
-    try:
-        config.read(cf)
-        return config
-    except:
-        pass
-
-
-def check_required(req_args):
+def check_request(req):
+    req_args = req.raw_args
+    errors = list()
     if "idx" not in req_args:
-        msg = "{{'manic':'malformed query (missing index 'idx')' }}"
-        return False, msg
-
+        errors.append('missing index parameter `idx`')
     if "st" not in req_args:
-        msg = "{{'manic':'malformed query (missing search term 'st')' }}"
-        return False, msg
-
-    # find the right index
-    idx = req_args["idx"]
-    st = req_args["st"]
-
-    return idx, st
+        errors.append('missing search parameter `st`')
+    if errors:
+        error_d = dict()
+        error_d['errors'] = errors
+        return json.dumps(error_d, ensure_ascii=False)
+    return errors

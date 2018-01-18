@@ -4,8 +4,8 @@ from sanic.response import json
 from sanic.exceptions import SanicException
 
 from utils.utils import start_clock, end_clock
-from utils.server import server_config, check_required
-from utils.data import create, index, define_columns_using_delimiter, define_lastline_newline, find as ffind
+from utils.server import server_config, check_request
+from utils.data import create, index, define_columns_using_delimiter, define_lastline_newline, _find
 
 
 import json, time
@@ -17,7 +17,7 @@ uses python asynch methods in Sanic
 '''
 
 # get the server configuration
-config = server_config()
+_config = server_config()
 
 # memory mapped file reference
 _mm = None
@@ -36,25 +36,22 @@ async def test(request):
 @app.route("/f", methods=['GET'])
 async def find(request):
 
-    req_args = request.raw_args
-    idx, st = check_required(req_args)
+    errors = check_request(request)
+    if errors:
+        return response.text(errors, 400)
 
-    if not idx or not st:
-        msg = st
-        return response.json(msg, 400)
+    idx = request.raw_args["idx"]
+    st = request.raw_args["st"]
 
     if idx not in _indices:
         msg = "{{'manic':'malformed query (index {} not found)' }}".format(idx)
         return response.json(msg, 400)
-    s_idx = _indices[idx]
 
-    begin_request_time = start_clock()
-    # returns the score for the hand
-    resp = ffind(_mm, s_idx, st)
-    exec_time = end_clock(begin_request_time)
+    s_idx = _indices[idx]
+    resp, exec_time = _find(_mm, s_idx, st)
 
     if not resp:
-        msg = "{{'manic':'unable to find {}', 'search_time_milliseconds':{}}}".format(st, exec_time)
+        msg = "{{'manic':'unable to find {}', 'lookup_time_milliseconds':{}}}".format(st, exec_time)
         return response.json(msg, 404)
 
     pl = "{{'result':'{}','lookup-time-milliseconds':'{}'}}".format(resp, exec_time)
@@ -63,19 +60,19 @@ async def find(request):
 
 
 if __name__ == "__main__":
-
-    filename = "/Users/robin/poker/test-scores-file.txt"
+    # TODO - extract
 
     # verify and validate the score file
     print("loading file into memory map...")
 
     # load score file into memory map
-    _mm = create(filename)
+    _mm = create(_config["memmap"]["filepath"])
 
     # define the column layout and indexing
-    cols = ["hand", "score", "hh", "hhs"]
-    cis = define_columns_using_delimiter(cols, ",")
-    define_lastline_newline(cis, n=True)
+    cols = _config["memmap"]["columns"]
+    delimiter = _config["memmap"]["delimiter"]
+    cis = define_columns_using_delimiter(cols, delimiter)
+    define_lastline_newline(cis, _config["memmap"]["llnf"])
 
     # create hashed lookups for file
     print("creating indices...")

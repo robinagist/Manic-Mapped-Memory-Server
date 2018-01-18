@@ -1,4 +1,5 @@
-import mmap
+import mmap, time
+from utils.utils import start_clock, end_clock
 
 '''
 utility methods for data processing
@@ -87,22 +88,20 @@ def index(mm, cis):
 
     if cis["type"] == "delim":
         # set up a read-ahead buffer
-        delim = cis["delim"]
+        delim = ","
         read_ahead_lines = cis["chomp"]
         llnl = cis["llnl"]
         idx_names = cis["names"]
 
         # create the index structures
 
-        for idx in idx_names:
-            if not idx:
-                _idx.append(None)
+        for _ in idx_names:
+            d = dict()
             _idx.append(dict())
 
         # go through the file line by line, making an index
         while(True):
-            line_l = 0
-            print(pos)
+
             mm.seek(pos)
             try:
                 line = bytes.decode(mm.readline())
@@ -113,62 +112,63 @@ def index(mm, cis):
             # line by itself is end of file
             if llnl and line == '\n':
                 break
-            if line == None:
+            if len(line.strip()) == 0:
                 break
+
+
+            '''
             # read ahead at beginning of file
             # TODO - do not use yet
             if read_ahead_lines:
                 read_ahead_lines-=1
                 continue
-
+            '''
 
             # now index
             line_l = len(line)
             vals = line.strip().split(delim)
-
-            cc = -1
+            cc = 0
             for idx in _idx:
-                cc += 1
-                if not idx:
-                    continue
                 v = vals[cc]
                 idx[v] = pos
+                cc += 1
 
             # forward to next line
             pos += line_l
 
         dd = dict()
-        cc = -1
+        cc = 0
         for idx in idx_names:
-            cc += 1
-            if not idx:
-                continue
             dd[idx] = _idx[cc]
+            cc += 1
 
-    return dd
+        return dd
 
 
-def find(mm, index, target):
+
+def _find(mm, index, target):
     '''
     return a line with the matching entry
     :param target: a string containing the lookup criteria (hand, hashed hand, hashed hand score)
     :param index: dict - the index to use to search
-    :return: a dict containing the hand, padded score, hashed handed, and hashed hand score
+    :return: a dict containing the entire result
+             a floating point of the lookup time in milliseconds
     '''
 
     pos = 0
     mm.seek(pos)
 
     try:
+        s = start_clock()                # start lookup timer
         pos = index[target]
         if not pos:
-            return None
+            return None, None
         mm.seek(pos)
+        e = end_clock(s)                 # end lookup timer
     except:
-        return None
+        return None, None
 
-    return bytes.decode(mm.readline())
-
+    return bytes.decode(mm.readline()), e
 
 
 def m_rewind(mm):
