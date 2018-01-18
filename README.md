@@ -7,7 +7,7 @@ Manic runs on top of Sanic, a super fast, Flask-like async platform for Python h
 
 Even more, Manic allows you to write protect the file in memory at the page level, and check a previously calculated SHA256 of the text file, against your own SHA256, before it is loaded into a memory map, providing hella fast lookups in the single digit microsecond range on your laptop.
 
-Manic was extracted from an Ethereum oracle project I am working on, and made open source under an MIT license.  It is still a work in progress.
+Manic was extracted from an Ethereum oracle project I am working on, and made open source under an MIT license.  This repo is still a work in progress, but Manic is fully working and functional for your fast lookup use cases.
 
 At the moment, Manic will only ingest and index delimited text files.
 
@@ -33,6 +33,7 @@ COMING VERY SOON
 + pip installation
 + automatic column hashing added as an extra column of data in the memmap
 + provide for secure file updating and indexing remotely
++ ability for manic to pull files via HTTP (or other) request methods
 + a testing tool that is already in the works
 
 
