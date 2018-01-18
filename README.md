@@ -5,7 +5,7 @@ Manic is a asynchronous REST server that allows super fast querying of large mem
 
 Manic runs on top of Sanic, a super fast, Flask-like async platform for Python https://github.com/channelcat/sanic
 
-Even more, Manic allows you to write protect the file in memory, and check a previously calculated SHA256 of the text file, against your own SHA256, before it is loaded into a memory map.
+Even more, Manic allows you to write protect the file in memory at the page level, and check a previously calculated SHA256 of the text file, against your own SHA256, before it is loaded into a memory map.
 
 Manic was extracted from an Ethereum oracle project I am working on, and made open source under an MIT license.  It is still a work in progress.
 
