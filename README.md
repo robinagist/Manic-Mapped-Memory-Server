@@ -26,10 +26,14 @@ At the moment, Manic will only ingest and index delimited text files.
 + does not do partial searches
 
 
-COMING VERY SOON
+COMING SOON
 
 + basic documentation (it's easy to set up your single file for indexing and search, with just configuration of a JSON file -- I just need to show you)
 + multiple file support
++ row level updates
++ permissions layer on top page layer protections
++ secure session level access
++ client lib
 + pip installation
 + automatic column hashing added as an extra column of data in the memmap
 + provide for secure file updating and indexing remotely
