@@ -171,6 +171,7 @@ def _find(mm, index, target):
     return bytes.decode(mm.readline()), e
 
 
+
 def m_rewind(mm):
     return mm.seek(0)
 

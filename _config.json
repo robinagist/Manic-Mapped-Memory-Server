@@ -6,5 +6,9 @@
         "columns": ["column", "names", "for", "your", "file"],
         "delimiter":",",
         "llnf": false
-	}
+	},
+    "server": {
+        "loglevel":"INFO",
+        "filepath":"manic.log"
+    }
 }

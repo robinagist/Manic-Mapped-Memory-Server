@@ -1,14 +1,8 @@
-
 from sanic import Sanic, response
-from sanic.response import json
-from sanic.exceptions import SanicException
-
-from utils.utils import start_clock, end_clock
-from utils.server import server_config, check_request
+from utils.server import server_config, check_request, logging_level, get_index, no_result
 from utils.data import create, index, define_columns_using_delimiter, define_lastline_newline, _find
+import logging
 
-
-import json, time
 '''
 Manic - hella fast mapped memory lookup server  v 0.00aa
 (c) 2018 - kaotik.io - All Rights Reserved
@@ -19,11 +13,14 @@ uses python asynch methods in Sanic
 # get the server configuration
 _config = server_config()
 
-# memory mapped file reference
-_mm = None
+# logfile TODO - make this work
+_log = logging.getLogger("Manic")
+_log.setLevel(logging_level(_config["server"]["loglevel"]))
 
 # where the created indices are stored
 _indices = dict()
+# memory mapped file reference
+_mm = None
 
 app = Sanic()
 
@@ -36,31 +33,27 @@ async def test(request):
 @app.route("/f", methods=['GET'])
 async def find(request):
 
-    errors = check_request(request)
-    if errors:
-        return response.text(errors, 400)
+    # check to make sure the query is formed properly
+    # get the index name and search term
+    idx, st = check_request(request)
 
-    idx = request.raw_args["idx"]
-    st = request.raw_args["st"]
+    # select the index
+    s_idx = get_index(idx, _indices)
 
-    if idx not in _indices:
-        msg = "{{'manic':'malformed query (index {} not found)' }}".format(idx)
-        return response.json(msg, 400)
-
-    s_idx = _indices[idx]
+    # lookup the search term
     resp, exec_time = _find(_mm, s_idx, st)
 
     if not resp:
-        msg = "{{'manic':'unable to find {}', 'lookup_time_milliseconds':{}}}".format(st, exec_time)
-        return response.json(msg, 404)
+        return response.json(no_result(st, exec_time), 404)
 
-    pl = "{{'result':'{}','lookup-time-milliseconds':'{}'}}".format(resp, exec_time)
+    pl = dict()
+    pl["result"] = resp
+    pl["lookup-time-ms"] = exec_time
 
-    return response.json(pl, status=200)
+    return response.text(pl, status=200)
 
 
 if __name__ == "__main__":
-    # TODO - extract
 
     # verify and validate the score file
     print("loading file into memory map...")
