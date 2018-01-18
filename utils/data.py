@@ -2,8 +2,9 @@ import mmap, time
 from utils.utils import start_clock, end_clock
 
 '''
-utility methods for data processing
+utility methods for index and memory map processing
 '''
+
 
 def define_columns_using_delimiter(colnames, delim=','):
     '''
@@ -26,8 +27,10 @@ def define_columns_using_delimiter(colnames, delim=','):
     # set up skip and chomp defaults
     d["skip"] = 0
     d["chomp"] = 0
+    d["llnl"] = False
 
     return d
+
 
 def define_skip_startlines(n, cis):
     '''
@@ -38,6 +41,7 @@ def define_skip_startlines(n, cis):
     '''
     cis["skip"] = n
 
+
 def define_chomp_lastlines(n, cis):
     '''
     tells the parser to not include the last n lines of the file
@@ -47,6 +51,7 @@ def define_chomp_lastlines(n, cis):
     '''
     cis["chomp"] = n
 
+
 def define_lastline_newline(cis, n=True):
     '''
     tells the parser to not include the last n lines of the file
@@ -55,6 +60,7 @@ def define_lastline_newline(cis, n=True):
     :return:
     '''
     cis["llnl"] = n
+
 
 def create(filename):
     '''
@@ -66,7 +72,7 @@ def create(filename):
     lock = mmap.ACCESS_READ
 
     with open(filename, "r") as readfile:
-        mm = mmap.mmap(readfile.fileno(),length=0, access=lock)
+        mm = mmap.mmap(readfile.fileno(), length=0, access=lock)
         # be kind and rewind
         mm.seek(0)
         readfile.close()
@@ -79,24 +85,20 @@ def index(mm, cis):
     :param mm: memory mapped file reference
            cis: column indexing structure (created by a 'define_columns_xxx' method)
     :returns: dictionary of named dicts that contain the indices
-
-
     '''
+
     pos = 0
     _idx = list()
-
 
     if cis["type"] == "delim":
         # set up a read-ahead buffer
         delim = ","
         read_ahead_lines = cis["chomp"]
         llnl = cis["llnl"]
-        idx_names = cis["names"]
 
         # create the index structures
-
+        idx_names = cis["names"]
         for _ in idx_names:
-            d = dict()
             _idx.append(dict())
 
         # go through the file line by line, making an index
@@ -114,7 +116,6 @@ def index(mm, cis):
                 break
             if len(line.strip()) == 0:
                 break
-
 
             '''
             # read ahead at beginning of file
@@ -145,7 +146,6 @@ def index(mm, cis):
         return dd
 
 
-
 def _find(mm, index, target):
     '''
     return a line with the matching entry
@@ -171,8 +171,7 @@ def _find(mm, index, target):
     return bytes.decode(mm.readline()), e
 
 
-
-def m_rewind(mm):
+def rewind(mm):
     return mm.seek(0)
 
 
