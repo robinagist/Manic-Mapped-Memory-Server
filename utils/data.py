@@ -221,8 +221,6 @@ def _find(mm, index, target):
         # no result
         if not pos:
             return None, None
-        # chained
-        print(pos)
         if isinstance(pos, set):
             for p in pos:
                 mm.seek(p)

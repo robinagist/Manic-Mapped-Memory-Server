@@ -52,12 +52,12 @@ def no_result(st, exec_time):
 def plain_response(resp, exec_time):
     pl = dict()
     pl["result"] = resp
+    pl["rows-returned"] = len(resp)
     pl["lookup-time-ms"] = exec_time
     return pl
 
 # sets up the configuration for indexing and searching
 def manic_setup(config):
-  #  cols = config["memmap"]["columns"]
     cols = config["memmap"]["indexes"]
     delimiter = config["memmap"]["delimiter"]
     cis = data.define_columns_using_delimiter(cols, delimiter)
