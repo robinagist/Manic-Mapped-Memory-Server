@@ -36,7 +36,6 @@ async def test(request):
 async def find(request):
 
     # check to make sure the query is formed properly
-
     # get the index name and search term
     idx, st = check_request(request)
 
@@ -45,6 +44,11 @@ async def find(request):
 
     # lookup the search term
     resp, exec_time = _find(_mm, s_idx, st)
+
+    # if index is empty, that means column was marked for non-indexing
+    if resp == 0 and exec_time == 0:
+        msg = "column not indexed and is not searchable"
+        return response.text(plain_response(msg, exec_time), status=400)
 
     # if search term not found on selected index
     if not resp:
@@ -67,7 +71,7 @@ if __name__ == "__main__":
     print("bypass verification is set to True - file not verified") if bypassed else print("verified")
 
     print("loading file into memory map...")
-    # load score file into memory map - use mapped_filename helper
+    # load score file into memory map
     _mm = create(mapped_filename(_config))
 
     # define the column layout and indexing

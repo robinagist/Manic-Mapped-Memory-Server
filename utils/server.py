@@ -15,6 +15,10 @@ def server_config():
 def mapped_filename(config):
     return config["memmap"]["filepath"]
 
+# helper - returns the index/column config
+def index_config(config):
+    return config["memmap"]["column_def"]
+
 
 def check_request(req):
     req_args = req.raw_args
@@ -37,7 +41,7 @@ def get_index(idx, indices):
 def no_result(st, exec_time):
     pl = dict()
     pl["error"] = "unable to find {}".format(st)
-    pl["lookup-time-ms"] = "lookup-time-ms {}".format(exec_time)
+    pl["lookup-time-ms"] = exec_time
     return pl
 
 # format a response helper
@@ -49,7 +53,8 @@ def plain_response(resp, exec_time):
 
 # sets up the configuration for indexing and searching
 def manic_setup(config):
-    cols = config["memmap"]["columns"]
+  #  cols = config["memmap"]["columns"]
+    cols = config["memmap"]["indexes"]
     delimiter = config["memmap"]["delimiter"]
     cis = data.define_columns_using_delimiter(cols, delimiter)
     data.define_lastline_newline(cis, config["memmap"]["llnf"])

@@ -22,7 +22,33 @@ def define_columns_using_delimiter(colnames, delim=','):
     d = dict()
     d["type"] = "delim"
     d["delim"] = delim
-    d["names"] = colnames
+    d["indexes"] = colnames
+
+    # set up skip and chomp defaults
+    d["skip"] = 0
+    d["chomp"] = 0
+    d["llnl"] = False
+
+    return d
+
+
+def define_column_actions(column_defs, delim=','):
+    '''
+
+    defines the columns of the data file as separated by a delimiter
+
+    :param colnames: list - an ordered list of column names
+    :param delim: string - the
+    :return: a data structure to be used by the indexing method
+
+    note:  if a column of data is not to be indexed (e.g. no lookups will be performed)
+    in place of a field name, use _
+    '''
+
+    d = dict()
+    d["type"] = "delim"
+    d["delim"] = delim
+    d["indexes"] = column_defs
 
     # set up skip and chomp defaults
     d["skip"] = 0
@@ -97,7 +123,10 @@ def index(mm, cis):
         llnl = cis["llnl"]
 
         # create the index structures
-        idx_names = cis["names"]
+        idx_profiles = cis["indexes"]
+        idx_names = [x["name"] for x in idx_profiles]
+        idx_constraints = [x["constraint"] for x in idx_profiles]
+
         for _ in idx_names:
             _idx.append(dict())
 
@@ -125,13 +154,34 @@ def index(mm, cis):
                 continue
             '''
 
-            # now index
             line_l = len(line)
             vals = line.strip().split(delim)
             cc = 0
             for idx in _idx:
                 v = vals[cc]
-                idx[v] = pos
+                # TODO - skip indexing of this column if the colname has NOINDEX in it
+                if idx_constraints[cc] == "NOINDEX":
+                    continue
+
+                # build the index
+                if v in idx:
+                    p = idx[v]
+                    # already chained
+                    if isinstance(p, set):
+                        p.add(pos)
+
+                    # TODO - if an index is marked as UNIQUE, throw a ChainingException
+                    # one element exists -- add chain to add this element
+                    elif isinstance(p, int):
+                        if idx_constraints[cc] == "UNIQUE":
+                            raise Exception("duplicate key `{}` found in column marked UNIQUE".format(v))
+                        s = set()
+                        s.add(p)
+                        s.add(pos)
+                        idx[v] = s
+                else:
+                    # no chain
+                    idx[v] = pos
                 cc += 1
 
             # forward to next line
@@ -157,6 +207,10 @@ def _find(mm, index, target):
 
     pos = 0
     mm.seek(pos)
+
+    # empty index means no index on this column
+    if len(index)==0:
+        return 0, 0
 
     try:
         s = start_clock()                # start lookup timer
