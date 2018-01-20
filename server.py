@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     if errors:
         verify_errors(errors)
-        
+
     print("bypass verification is set to True - file not verified") if bypassed else print("verified")
 
     print("loading file into memory map...")
