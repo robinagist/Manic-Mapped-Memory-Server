@@ -1,6 +1,6 @@
 from sanic import Sanic, response
 from utils.server import server_config, check_request, logging_level, get_index, no_result, \
-    plain_response, manic_setup, mapped_filename ,scream
+    plain_response, manic_setup, mapped_filename ,scream, manic_port
 from utils.data import create, index, _find
 from utils.verify import verify_file, verify_filename, verify_errors
 import logging
@@ -66,8 +66,10 @@ if __name__ == "__main__":
     # verify and validate the score file
     print("verifying file against hash provided by originator")
     errors, bypassed = verify_file(mapped_filename(_config), verify_filename(_config), bypass=True)
+
     if errors:
         verify_errors(errors)
+        
     print("bypass verification is set to True - file not verified") if bypassed else print("verified")
 
     print("loading file into memory map...")
@@ -81,7 +83,7 @@ if __name__ == "__main__":
     print("creating indices...")
     _indices = index(_mm, setup_c)
 
-    app.run(host="0.0.0.0", port=5216)
+    app.run(host="0.0.0.0", port=manic_port(_config))
 
 
 

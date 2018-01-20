@@ -19,6 +19,10 @@ def mapped_filename(config):
 def index_config(config):
     return config["memmap"]["column_def"]
 
+# helper - returns the server port number from config
+def manic_port(config):
+    return config["server"]["port"]
+
 
 def check_request(req):
     req_args = req.raw_args

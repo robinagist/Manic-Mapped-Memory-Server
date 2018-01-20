@@ -1,5 +1,6 @@
 {
 	"memmap": {
+        "pagelocking": true,
         "type":"delim",
 		"filepath": "path_to_your_big_delimited_text_file_here",
 		"verifyfile": "path_to_your_sha256_verification_file",
