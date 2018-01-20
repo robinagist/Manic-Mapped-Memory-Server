@@ -159,15 +159,17 @@ def index(mm, cis):
             cc = 0
             for idx in _idx:
                 v = vals[cc]
+#                print(v)
                 # TODO - skip indexing of this column if the colname has NOINDEX in it
                 if idx_constraints[cc] == "NOINDEX":
                     continue
-
+#                time.sleep(1)
                 # build the index
                 if v in idx:
                     p = idx[v]
                     # already chained
                     if isinstance(p, set):
+#                        print("already chained")
                         p.add(pos)
 
                     # TODO - if an index is marked as UNIQUE, throw a ChainingException
@@ -182,6 +184,7 @@ def index(mm, cis):
                 else:
                     # no chain
                     idx[v] = pos
+ #               print(idx[v])
                 cc += 1
 
             # forward to next line
@@ -211,18 +214,28 @@ def _find(mm, index, target):
     # empty index means no index on this column
     if len(index)==0:
         return 0, 0
-
+    resp = set()
     try:
         s = start_clock()                # start lookup timer
         pos = index[target]
+        # no result
         if not pos:
             return None, None
-        mm.seek(pos)
+        # chained
+        print(pos)
+        if isinstance(pos, set):
+            for p in pos:
+                mm.seek(p)
+                resp.add(bytes.decode(mm.readline()))
+        else:
+            mm.seek(pos)
+            resp.add(bytes.decode(mm.readline()))
+
         e = end_clock(s)                 # end lookup timer
     except:
         return None, None
 
-    return bytes.decode(mm.readline()), e
+    return resp, e
 
 
 def rewind(mm):
