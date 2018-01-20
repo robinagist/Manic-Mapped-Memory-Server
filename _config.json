@@ -1,9 +1,10 @@
 {
 	"memmap": {
-        "pagelocking": true,
+        "id": "handscore",
+        "pagelocking" : true,
         "type":"delim",
-		"filepath": "path_to_your_big_delimited_text_file_here",
-		"verifyfile": "path_to_your_sha256_verification_file",
+		"filepath": "/Users/robin/poker/test-scores-file.txt",
+		"verifyfile": "/Users/robin/poker/verify-hash.txt",
         "indexes": [{
             "name": "your",
             "constraint": "UNIQUE"
@@ -13,17 +14,18 @@
           },
           { "name": "names",
             "constraint": null
-
           },
           { "name": "here",
             "constraint": null
           }
         ],
-        "delimiter": ",",
-        "llnf": false
+        "delimiter":",",
+        "llnf": true,
+        "result-format": "PARSE"
 	},
     "server": {
+        "port": 5216,
         "loglevel":"INFO",
-        "filepath":"manic.log"
+        "filepath":"/Users/robin/PycharmProjects/manic/manic.log"
     }
 }

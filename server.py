@@ -1,6 +1,6 @@
 from sanic import Sanic, response
 from utils.server import server_config, check_request, logging_level, get_index, no_result, \
-    plain_response, manic_setup, mapped_filename ,scream, manic_port
+    plain_response, manic_setup, mapped_filename ,scream, manic_port, is_parsed_response, parsed_response
 from utils.data import create, index, _find
 from utils.verify import verify_file, verify_filename, verify_errors
 import logging
@@ -55,6 +55,9 @@ async def find(request):
         return response.text(no_result(st, exec_time), status=404)
 
     # use response helper to send JSON reply
+    if is_parsed_response(_config):
+        print("parsed response")
+        return response.text(parsed_response(resp, exec_time, _config), status=200)
     return response.text(plain_response(resp, exec_time), status=200)
 
 

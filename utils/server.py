@@ -56,6 +56,44 @@ def plain_response(resp, exec_time):
     pl["lookup-time-ms"] = exec_time
     return pl
 
+
+# get the column names
+def get_column_names(config):
+    names = []
+    cols = config["memmap"]["indexes"]
+    for col in cols:
+        n = col["name"]
+        names.append(n)
+    return names
+
+# returns the format preference
+def is_parsed_response(config):
+    if config["memmap"]["result-format"] == "PARSE":
+        return True
+    return False
+
+# format a parsed response helper
+def parsed_response(resp, exec_time, config):
+    pl = dict()
+    rl = list()
+    cols = get_column_names(config)
+    for line in resp:
+        cc = 0
+        d = dict()
+#        print("line: {}".format(line))
+        l = line.strip().split(',')
+#        print(l)
+        for col in cols:
+#            print(cc)
+            d[col] = l[cc]
+            cc += 1
+        rl.append(d)
+    pl["result"] = rl
+
+    pl["rows-returned"] = len(resp)
+    pl['lookup-time-ms'] = exec_time
+    return pl
+
 # sets up the configuration for indexing and searching
 def manic_setup(config):
     cols = config["memmap"]["indexes"]
