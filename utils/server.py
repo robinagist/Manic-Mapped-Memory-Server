@@ -36,7 +36,7 @@ def check_request(req):
 def get_index(idx, indices):
     if idx not in indices:
         msg = "{{'manic':'malformed query (index {} not found)' }}".format(idx)
-        _log.warning("malformed query: index {} not found".format(idx))
+        # _log.warning("malformed query: index {} not found".format(idx))
         raise SanicException(msg, 400)
     return indices[idx]
 
@@ -80,11 +80,8 @@ def parsed_response(resp, exec_time, config):
     for line in resp:
         cc = 0
         d = dict()
-#        print("line: {}".format(line))
         l = line.strip().split(',')
-#        print(l)
         for col in cols:
-#            print(cc)
             d[col] = l[cc]
             cc += 1
         rl.append(d)

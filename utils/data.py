@@ -159,17 +159,15 @@ def index(mm, cis):
             cc = 0
             for idx in _idx:
                 v = vals[cc]
-#                print(v)
+
                 # TODO - skip indexing of this column if the colname has NOINDEX in it
                 if idx_constraints[cc] == "NOINDEX":
                     continue
-#                time.sleep(1)
                 # build the index
                 if v in idx:
                     p = idx[v]
                     # already chained
                     if isinstance(p, set):
-#                        print("already chained")
                         p.add(pos)
 
                     # TODO - if an index is marked as UNIQUE, throw a ChainingException
@@ -184,7 +182,6 @@ def index(mm, cis):
                 else:
                     # no chain
                     idx[v] = pos
- #               print(idx[v])
                 cc += 1
 
             # forward to next line
