@@ -5,15 +5,6 @@ from utils import data
 import config
 
 
-def server_config():
- #   try:
-    with open('/Users/robin/PycharmProjects/manic/config.json') as configfile:
-        data = json.load(configfile)
-#    except:
-#        raise Exception("missing configuration file")
-    return data
-
-
 # helper - returns the mappped file path from the app configuration
 def mapped_filename(cfg):
     fn = cfg["filepath"]
@@ -69,7 +60,7 @@ def plain_response(resp, exec_time):
 # get the column names
 def get_column_names(config):
     names = []
-    cols = config["memmap"]["indexes"]
+    cols = config["indexes"]
     for col in cols:
         n = col["name"]
         names.append(n)
@@ -77,7 +68,7 @@ def get_column_names(config):
 
 # returns the format preference
 def is_parsed_response(config):
-    if config["memmap"]["result-format"] == "PARSE":
+    if config["result-format"] == "PARSE":
         return True
     return False
 
@@ -109,7 +100,7 @@ def manic_setup(config):
     return cis
 
 # helper app startup blurb
-def scream(config=None):
+def scream():
     print()
     print("Manic Fast Mapped Memory Server 0.0a")
     print("(c) 2018 - kaotik.io - all rights reserved")

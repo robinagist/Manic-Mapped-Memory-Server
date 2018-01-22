@@ -26,7 +26,7 @@ async def find(request):
     idx, st = check_request(request)
 
     # lookup the search term
-    return app.m_find(idx, st)
+    return app.find(idx, st)
 
 
 # start
