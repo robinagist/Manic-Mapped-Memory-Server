@@ -48,9 +48,11 @@ def verify_file(mapped_file, verifyfile, bypass=False):
 
     return errors, bypass
 
+
 # helper - returns the verify file full path
 def verify_filename(config):
         return config["memmap"]["verifyfile"]
+
 
 # verification helper -- error blurb
 def verify_errors(errors):

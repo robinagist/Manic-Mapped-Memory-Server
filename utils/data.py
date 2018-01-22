@@ -1,5 +1,6 @@
-import mmap, time
+import mmap, time, os
 from utils.utils import start_clock, end_clock
+import config, json
 
 '''
 utility methods for index and memory map processing
@@ -88,6 +89,31 @@ def define_lastline_newline(cis, n=True):
     cis["llnl"] = n
 
 
+def load_memfile_configs():
+    '''
+    creates a lookup for memfile names to configurations
+    :return:
+    '''
+
+    # get the base directory
+    basedir = config.BASE_PATH
+    memfilesdir = config.MEMFILES_DIR
+    fullpath = "{}/{}".format(basedir, memfilesdir)
+    configs = list()
+
+    for name in next(os.walk(fullpath))[1]:
+        cfg = "{}/{}/{}".format(fullpath, name, "config.json")
+        try:
+            with open(cfg) as configfile:
+                cis = json.load(configfile)
+                cis["mmname"] = name
+                configs.append(cis)
+        except:
+            raise Exception("missing config.json for {} ".format(name))
+
+    return configs
+
+
 def create(filename):
     '''
     loads the score file into a memory mapped file, then write protects it
@@ -103,6 +129,29 @@ def create(filename):
         mm.seek(0)
         readfile.close()
         return mm
+
+
+def mf_index(mmm_, cfgs_dict):
+    '''
+    index multiple memmap files
+    :param mmm: dict() containing {"index_name":"<index_name>", "mapped_file":{<mapped_file>]
+    :param cfg: dict() contains the configurations for each of the memfiles
+    :return:
+    '''
+
+    cidx = {}
+    # for each mapped file
+    for cfg in cfgs_dict:
+        # .. index the columns
+        idxs = index(mmm_, cfg)
+        # .. create index to index name
+        for idx in idxs.keys():
+            cidx[idx] = cf
+
+    # .. map column index to mapped file (lookup)
+
+    pass
+
 
 
 def index(mm, cis):
@@ -159,18 +208,18 @@ def index(mm, cis):
             cc = 0
             for idx in _idx:
                 v = vals[cc]
-
-                # TODO - skip indexing of this column if the colname has NOINDEX in it
+                v = v.strip('\r\n')
                 if idx_constraints[cc] == "NOINDEX":
+                    cc += 1
                     continue
                 # build the index
                 if v in idx:
                     p = idx[v]
+
                     # already chained
                     if isinstance(p, set):
                         p.add(pos)
 
-                    # TODO - if an index is marked as UNIQUE, throw a ChainingException
                     # one element exists -- add chain to add this element
                     elif isinstance(p, int):
                         if idx_constraints[cc] == "UNIQUE":
@@ -180,6 +229,7 @@ def index(mm, cis):
                         s.add(pos)
                         idx[v] = s
                 else:
+
                     # no chain
                     idx[v] = pos
                 cc += 1

@@ -1,19 +1,22 @@
 from utils.server import check_request
 from manic.app import Manic
 from utils.helpers import teapot
+import config
 
 '''
 Manic - hella fast mapped memory lookup server  v 0.1
 (c) 2018 - kaotik.io - All Rights Reserved
 
-uses python asynch methods in Sanic
+uses python async methods in Sanic
 '''
 
 app = Manic()
 
-@app.route("/t")
+
+@app.route("/")
 async def test(request):
     return teapot()
+
 
 @app.route("/f", methods=['GET'])
 async def find(request):
@@ -23,11 +26,11 @@ async def find(request):
     idx, st = check_request(request)
 
     # lookup the search term
-    return app.find(idx, st)
+    return app.m_find(idx, st)
 
-if __name__ == "__main__":
 
-    app.start(host="0.0.0.0", port=5216)
+# start
+app.start(host=config.HOST, port=config.PORT)
 
 
 
