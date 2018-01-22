@@ -48,6 +48,7 @@ def no_result(st, exec_time):
     pl["lookup-time-ms"] = exec_time
     return pl
 
+
 # format a response helper
 def plain_response(resp, exec_time):
     pl = dict()
@@ -66,11 +67,13 @@ def get_column_names(config):
         names.append(n)
     return names
 
+
 # returns the format preference
 def is_parsed_response(config):
     if config["result-format"] == "PARSE":
         return True
     return False
+
 
 # format a parsed response helper
 def parsed_response(resp, exec_time, config):
@@ -91,6 +94,7 @@ def parsed_response(resp, exec_time, config):
     pl['lookup-time-ms'] = exec_time
     return pl
 
+
 # sets up the configuration for indexing and searching
 def manic_setup(config):
     cols = config["indexes"]
@@ -99,10 +103,11 @@ def manic_setup(config):
     data.define_lastline_newline(cis, config["llnf"])
     return cis
 
+
 # helper app startup blurb
 def scream():
     print()
-    print("Manic Fast Mapped Memory Server 0.0a")
+    print("Manic Fast Mapped Memory Server 0.2")
     print("(c) 2018 - kaotik.io - all rights reserved")
     print("released under the terms and conditions of the MIT Public License")
     print()

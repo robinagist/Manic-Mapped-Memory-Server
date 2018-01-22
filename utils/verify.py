@@ -34,12 +34,10 @@ def verify_file(mapped_file, verifyfile, bypass=False):
         return None, bypass
 
     vf = open(verifyfile, "r")
-
     errors = []
 
     # grab the hash
     vf_hash = vf.readline().strip()
-
     sf_calculated_hash = hashfile(mapped_file)
 
     if vf_hash != sf_calculated_hash:

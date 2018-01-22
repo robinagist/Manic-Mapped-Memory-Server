@@ -131,29 +131,6 @@ def create(filename):
         return mm
 
 
-def mf_index(mmm_, cfgs_dict):
-    '''
-    index multiple memmap files
-    :param mmm: dict() containing {"index_name":"<index_name>", "mapped_file":{<mapped_file>]
-    :param cfg: dict() contains the configurations for each of the memfiles
-    :return:
-    '''
-
-    cidx = {}
-    # for each mapped file
-    for cfg in cfgs_dict:
-        # .. index the columns
-        idxs = index(mmm_, cfg)
-        # .. create index to index name
-        for idx in idxs.keys():
-            cidx[idx] = cf
-
-    # .. map column index to mapped file (lookup)
-
-    pass
-
-
-
 def index(mm, cis):
     '''
     creates the indices for the memory mapped score file
