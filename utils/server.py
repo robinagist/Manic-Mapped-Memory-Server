@@ -2,6 +2,8 @@ import json
 import logging
 from sanic.exceptions import SanicException
 from utils import data
+import config
+
 
 def server_config():
  #   try:
@@ -11,13 +13,20 @@ def server_config():
 #        raise Exception("missing configuration file")
     return data
 
+
 # helper - returns the mappped file path from the app configuration
-def mapped_filename(config):
-    return config["memmap"]["filepath"]
+def mapped_filename(cfg):
+    fn = cfg["filepath"]
+    fdir = cfg["mmname"]
+    basedir = config.BASE_PATH
+    memfilesdir = config.MEMFILES_DIR
+    return "{}/{}/{}/{}".format(basedir, memfilesdir, fdir, fn)
+
 
 # helper - returns the index/column config
 def index_config(config):
     return config["memmap"]["column_def"]
+
 
 # helper - returns the server port number from config
 def manic_port(config):
@@ -93,10 +102,10 @@ def parsed_response(resp, exec_time, config):
 
 # sets up the configuration for indexing and searching
 def manic_setup(config):
-    cols = config["memmap"]["indexes"]
-    delimiter = config["memmap"]["delimiter"]
+    cols = config["indexes"]
+    delimiter = config["delimiter"]
     cis = data.define_columns_using_delimiter(cols, delimiter)
-    data.define_lastline_newline(cis, config["memmap"]["llnf"])
+    data.define_lastline_newline(cis, config["llnf"])
     return cis
 
 # helper app startup blurb
