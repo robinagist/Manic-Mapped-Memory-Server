@@ -2,7 +2,7 @@ from sanic import Sanic, response
 from utils.server import logging_level, manic_setup, mapped_filename, scream, plain_response, \
     no_result, parsed_response, is_parsed_response
 from utils.data import create, index, _find, load_memfile_configs
-from manic import exceptions
+from manic.exceptions import ManicIndexingError
 import logging
 
 
@@ -47,6 +47,10 @@ class Manic(Sanic):
 
             # add lookup for index to memmap
             for name, idx in indexes.items():
+                if name in self._mmm:
+                    msg = "column-index names must be unique within and across files"
+                    raise ManicIndexingError(msg)
+                
                 self._mmm[name] = (idx, mm, cfg)
 
         print("host: {} port: {}".format(host, port))
