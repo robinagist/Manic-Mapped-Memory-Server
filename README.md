@@ -13,17 +13,12 @@ At the moment, Manic will only ingest and index delimited text files.
 
 ***Real documentation is in the works, I promise***
 
-## Configuration is simple:
+## run it!
 
 + clone the repo `git@github.com:robinagist/Manic-Mapped-Memory-Server.git`
 + high recommended that you run it in virtualenv with at least Python 3.5
 + install Sanic `pip install sanic`
 + Manic is already configured to index two example files in the `/manic/memfiles` directory
-+ in the `/manic/memfiles` directory, create a subdirectory
-+ drop in your delimited file (or use the examples)
-+ in your flat-file, determine the number of fields in a row of data, separated by a delimiter
-+ determine the names of the data columns, which ones should be constrained `UNIQUE` and which ones shouldn't index (`NOINDEX`)
-+ put a copy of one of the `config.json` files in the directory and fill in with the data from the last instruction
 + from the `manic` directory, start the server: 'python server.py` which will immediately index the files
 + the server listens on port `5216` by default
 + the query string on the URL for the server will be of the format:
