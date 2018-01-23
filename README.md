@@ -38,7 +38,9 @@ where index_name is the column you wish to perform a lookup.
   
   or try `curl "http://0.0.0.0:5216/f?idx=cat&st=D"` and you should get around 250 results
   
+Each column name is also the index name.  To do a lookup on a column -- say for an FCC callsign -- use the `call` column and the search term `st` is an FCC assigned callsign, hopefully appearing in the file.  The columns are defined in the configuration file for the file that is being indexed.  These are located in the `~/memfiles` subdirectory.
 
+More documentation later.
 
 
 
