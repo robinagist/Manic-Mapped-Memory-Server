@@ -4,10 +4,10 @@ from utils.helpers import teapot
 import config
 
 '''
-Manic - hella fast mapped memory lookup server  v 0.1
+Manic - hella fast mapped memory lookup server
 (c) 2018 - kaotik.io - All Rights Reserved
 
-uses python async methods in Sanic
+runs on top of Sanic async framework
 '''
 
 app = Manic()
@@ -29,7 +29,6 @@ async def find(request):
     return app.find(idx, st)
 
 
-# start
 app.start(host=config.HOST, port=config.PORT)
 
 

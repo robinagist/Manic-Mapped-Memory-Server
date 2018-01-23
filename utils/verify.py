@@ -16,7 +16,7 @@ def hashfile(filename):
             if not data:
                 break
             sha1.update(data)
-            return sha1.hexdigest()
+        return sha1.hexdigest()
 
 
 def verify_file(mapped_file, verifyfile, bypass=False):
