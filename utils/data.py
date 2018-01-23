@@ -155,7 +155,8 @@ def index(mm, cis):
         idx_names = [x["name"] for x in idx_profiles]
         idx_constraints = [x["constraint"] for x in idx_profiles]
 
-        for _ in idx_names:
+        for name in idx_names:
+            if name in app._in
             _idx.append(dict())
 
         # go through the file line by line, making an index

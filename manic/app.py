@@ -17,13 +17,13 @@ class Manic(Sanic):
       #  self._log.setLevel(logging_level(self._config["server"]["loglevel"]))
 
         # where the created single file indices are stored
-        self._indices = dict()
+        # self._indices = dict()
 
         # multifile indices
         self._indexes = dict()
 
         # memory mapped file reference
-        self._mm = None
+        # self._mm = None
 
         # multiple mapped files reference
         self._mmm = dict()
@@ -47,10 +47,6 @@ class Manic(Sanic):
 
             # add lookup for index to memmap
             for name, idx in indexes.items():
-                if name in self._mmm:
-                    msg = "column-index names must be unique within and across files"
-                    raise ManicIndexingError(msg)
-                
                 self._mmm[name] = (idx, mm, cfg)
 
         print("host: {} port: {}".format(host, port))
