@@ -1,6 +1,7 @@
 import mmap, time, os
 from utils.utils import start_clock, end_clock
 import config, json
+from manic.exceptions import ManicChainingError, ManicIndexingError
 
 '''
 utility methods for index and memory map processing
@@ -150,10 +151,12 @@ def index(mm, cis):
 
         # create the index structures
         idx_profiles = cis["indexes"]
+
         idx_names = [x["name"] for x in idx_profiles]
         idx_constraints = [x["constraint"] for x in idx_profiles]
 
-        for _ in idx_names:
+        for name in idx_names:
+            if name in app._in
             _idx.append(dict())
 
         # go through the file line by line, making an index
@@ -200,7 +203,8 @@ def index(mm, cis):
                     # one element exists -- add chain to add this element
                     elif isinstance(p, int):
                         if idx_constraints[cc] == "UNIQUE":
-                            raise Exception("duplicate key `{}` found in column marked UNIQUE".format(v))
+                            msg = "duplicate key `{}` found in column marked UNIQUE".format(v)
+                            raise ManicChainingError(msg)
                         s = set()
                         s.add(p)
                         s.add(pos)

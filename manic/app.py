@@ -2,7 +2,7 @@ from sanic import Sanic, response
 from utils.server import logging_level, manic_setup, mapped_filename, scream, plain_response, \
     no_result, parsed_response, is_parsed_response
 from utils.data import create, index, _find, load_memfile_configs
-from manic import exceptions
+from manic.exceptions import ManicIndexingError
 import logging
 
 
@@ -17,13 +17,13 @@ class Manic(Sanic):
       #  self._log.setLevel(logging_level(self._config["server"]["loglevel"]))
 
         # where the created single file indices are stored
-        self._indices = dict()
+        # self._indices = dict()
 
         # multifile indices
         self._indexes = dict()
 
         # memory mapped file reference
-        self._mm = None
+        # self._mm = None
 
         # multiple mapped files reference
         self._mmm = dict()
