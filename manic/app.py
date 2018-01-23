@@ -2,6 +2,7 @@ from sanic import Sanic, response
 from utils.server import logging_level, manic_setup, mapped_filename, scream, plain_response, \
     no_result, parsed_response, is_parsed_response
 from utils.data import create, index, _find, load_memfile_configs
+from manic import exceptions
 import logging
 
 
