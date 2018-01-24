@@ -4,6 +4,7 @@ from utils.server import logging_level, manic_setup, mapped_filename, scream, pl
 from utils.data import create, index, _find, load_memfile_configs, check_memfile_configs
 from manic.exceptions import ManicIndexingError
 import logging
+import config as cfg
 
 
 class Manic(Sanic):
@@ -12,8 +13,26 @@ class Manic(Sanic):
 
         super(Manic, self).__init__()
 
+        # set up server configuration
+        if cfg.KEEP_ALIVE == 0:
+            self.config.KEEP_ALIVE = False
+        else:
+            self.config.KEEP_ALIVE = True
+            self.config.KEEP_ALIVE_TIMEOUT = cfg.KEEP_ALIVE
+
+
         # multiple mapped files reference
         self._mmm = dict()
+
+
+    def setup(self):
+        '''
+        sets up the server from values in config.py
+        :return:
+        '''
+
+        pass
+
 
     def start(self, host, port):
         # intro blurb
@@ -40,7 +59,6 @@ class Manic(Sanic):
             for name, idx in indexes.items():
                 self._mmm[name] = (idx, mm, cfg)
 
-        print("host: {} port: {}".format(host, port))
         super(Manic, self).run(host="0.0.0.0", port=5216)
 
 

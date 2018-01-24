@@ -117,7 +117,7 @@ def load_memfile_configs():
 
 def check_memfile_configs(cfgs):
     '''
-    prechecks the state of the memmap configs, to make sure there will be no problems
+    prechecks the state of the memmap configs, to make sure there will be no problems indexing
     + makes sure that there are no column name collisions
     :param cfgs: list of indexing configs
     :return: nothing.  throws an error if there is a problem
