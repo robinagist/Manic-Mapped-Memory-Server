@@ -129,7 +129,6 @@ def check_memfile_configs(cfgs):
     for cfg in cfgs:
         names_idx = cfg["indexes"]
         names = [x["name"] for x in names_idx]
-        print(names)
         for name in names:
             if name in index_columns:
                 msg = "index column names must be unique across and within index maps. `{}` is duplicated".format(name)
