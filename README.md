@@ -19,6 +19,7 @@ At the moment, Manic will only ingest and index delimited text files.
 + high recommended that you run it in virtualenv with at least Python 3.5
 + install Sanic `pip install sanic`
 + Manic is already configured to index two example files in the `/manic/memfiles` directory
++ configure the `BASE_PATH` in `config.py` to point to your local `manic` root
 + from the `manic` directory, start the server: 'python server.py` which will immediately index the files
 + the server listens on port `5216` by default
 + the query string on the URL for the server will be of the format:
