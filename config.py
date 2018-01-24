@@ -20,6 +20,19 @@ NOINDEX = 0b00000001
 UNIQUE  = 0b00000010
 
 
+
+# hashing and verification
+SHA1 = 1
+SHA3 = 2
+SHA256 = 3
+MD5 = 10
+
+PAGE_HASHING   = SHA1
+LINE_HASHING   = MD5
+COLUMN_HASHING = MD5
+
+
+
 BASE_PATH = "/Users/robin/PycharmProjects/manic"
 MEMFILES_DIR = "memfiles"
 

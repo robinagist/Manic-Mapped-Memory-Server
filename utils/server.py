@@ -16,14 +16,14 @@ def mapped_filename(cfg):
 
 # helper - returns the index/column config
 def index_config(config):
-    return config["memmap"]["column_def"]
+    return config["column_def"]
 
 
 # helper - returns the server port number from config
 def manic_port(config):
     return config["server"]["port"]
 
-
+# makes sure that the required request arguments are there
 def check_request(req):
     req_args = req.raw_args
     if "idx" not in req_args:
@@ -36,7 +36,6 @@ def check_request(req):
 def get_index(idx, indices):
     if idx not in indices:
         msg = "{{'manic':'malformed query (index {} not found)' }}".format(idx)
-        # _log.warning("malformed query: index {} not found".format(idx))
         raise SanicException(msg, 400)
     return indices[idx]
 
@@ -108,9 +107,10 @@ def manic_setup(config):
 def scream():
     print()
     print("Manic Fast Mapped Memory Server 0.2")
-    print("(c) 2018 - kaotik.io - all rights reserved")
+    print("(c) 2018 - kaotik.io")
     print("released under the terms and conditions of the MIT Public License")
     print()
+
 
 
 def logging_level(manic_level):

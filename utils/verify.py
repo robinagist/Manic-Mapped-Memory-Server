@@ -60,3 +60,8 @@ def verify_errors(errors):
         print()
         print("cannot load score file -- it's authenticity cannot be verified")
         exit(1)
+
+
+# helper - bypass verify
+def bypass_verify(config):
+    return config["bypass-verify"]

@@ -115,6 +115,28 @@ def load_memfile_configs():
     return configs
 
 
+def check_memfile_configs(cfgs):
+    '''
+    prechecks the state of the memmap configs, to make sure there will be no problems
+    + makes sure that there are no column name collisions
+    :param cfgs: list of indexing configs
+    :return: nothing.  throws an error if there is a problem
+    '''
+
+    index_columns = list()
+
+    # check for index name collisions
+    for cfg in cfgs:
+        names_idx = cfg["indexes"]
+        names = [x["name"] for x in names_idx]
+        print(names)
+        for name in names:
+            if name in index_columns:
+                msg = "index column names must be unique across and within index maps. `{}` is duplicated".format(name)
+                raise ManicIndexingError(msg)
+            index_columns.append(name)
+
+
 def create(filename):
     '''
     loads the score file into a memory mapped file, then write protects it
