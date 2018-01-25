@@ -1,9 +1,7 @@
 from sanic import Sanic, response
-from utils.server import logging_level, manic_setup, mapped_filename, scream, plain_response, \
+from utils.server import manic_setup, mapped_filename, scream, plain_response, \
     no_result, parsed_response, is_parsed_response
 from utils.data import create, index, _find, load_memfile_configs, check_memfile_configs
-from manic.exceptions import ManicIndexingError
-import logging
 import config as cfg
 
 
@@ -21,19 +19,8 @@ class Manic(Sanic):
             self.config.KEEP_ALIVE = True
             self.config.KEEP_ALIVE_TIMEOUT = cfg.KEEP_ALIVE
 
-
         # multiple mapped files reference
         self._mmm = dict()
-
-
-    def setup(self):
-        '''
-        sets up the server from values in config.py
-        :return:
-        '''
-
-        pass
-
 
     def start(self, host, port):
         # intro blurb
@@ -70,7 +57,7 @@ class Manic(Sanic):
         :param st:
         :return:
         '''
-        # s_idx = get_index(idx, self._indices)
+
         if idx not in self._mmm:
             msg = "index column `{}` not found".format(idx)
             return response.text(plain_response(msg, 0), status=400)
