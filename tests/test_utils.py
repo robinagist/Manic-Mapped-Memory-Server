@@ -9,7 +9,6 @@ def test_define_columns():
     assert d is not None
 
 
-
 def test_define_columns_more():
 
     cols = ["col1", "col2", None, "col3"]

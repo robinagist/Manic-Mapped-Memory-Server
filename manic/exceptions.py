@@ -20,3 +20,9 @@ class ManicPageProtectedError(Exception):
             msg = "Mapped file is write protected at the page level"
         Exception.__init__(self, msg)
 
+
+class ManicCryptograhicError(Exception):
+    def __init__(self, msg=None):
+        if not msg:
+            msg = "cryptographic settings are not properly configured"
+        Exception.__init__(self, msg)

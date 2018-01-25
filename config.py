@@ -1,3 +1,8 @@
+import hashlib
+# if you want to use sha3-256, pip install pysha3 and uncomment the sha3 lines below
+import sha3
+import xxhash
+
 
 '''
 Manic configuration
@@ -19,18 +24,25 @@ DEFAULT = 0b00000000
 NOINDEX = 0b00000001
 UNIQUE  = 0b00000010
 
-
-
 # hashing and verification
 SHA1 = 1
-SHA3 = 2
+SHA3_256 = 2
 SHA256 = 3
+
+# non crypto hashing
 MD5 = 10
+XXHASH = 11
 
 PAGE_HASHING   = SHA1
 LINE_HASHING   = MD5
 COLUMN_HASHING = MD5
+NON_CRYPTO_HASH = XXHASH
 
+SHA1_L = hashlib.sha1
+SHA3_256_L = sha3.keccak_256
+SHA256_L = hashlib.sha256
+MD5_L = hashlib.md5
+XXHASH_L = xxhash.xxh64
 
 
 BASE_PATH = "/Users/robin/PycharmProjects/manic"
