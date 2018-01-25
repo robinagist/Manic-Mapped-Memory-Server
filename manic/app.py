@@ -15,6 +15,7 @@ class Manic(Sanic):
 
         # set up server configuration
         if cfg.KEEP_ALIVE == 0:
+            self.config.KEEP_ALIVE_TIMEOUT = 0
             self.config.KEEP_ALIVE = False
         else:
             self.config.KEEP_ALIVE = True
