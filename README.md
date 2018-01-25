@@ -19,7 +19,6 @@ At the moment, Manic will only ingest and index delimited text files.
 + high recommended that you run it in virtualenv with at least Python 3.5
 + install Sanic `pip install sanic`
 + install pysha3 `pip install pysha3`
-+ install rsa `pip install rsa`
 + install xxhash `pip install xxhash` 
 + Manic is already configured to index two example files in the `/manic/memfiles` directory
 + configure the `BASE_PATH` in `config.py` to point to your local `manic` root
