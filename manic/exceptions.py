@@ -26,3 +26,10 @@ class ManicCryptograhicError(Exception):
         if not msg:
             msg = "cryptographic settings are not properly configured"
         Exception.__init__(self, msg)
+
+
+class ManicVerificationError(Exception):
+    def __init__(self, msg=None):
+        if not msg:
+            msg = "there was a problem with verification:  possibly a missing verify-hash.txt"
+        Exception.__init__(self, msg)

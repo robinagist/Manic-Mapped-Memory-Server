@@ -1,5 +1,4 @@
 import hashlib
-# if you want to use sha3-256, pip install pysha3 and uncomment the sha3 lines below
 import sha3
 import xxhash
 
@@ -33,17 +32,9 @@ SHA256 = 3
 MD5 = 10
 XXHASH = 11
 
-PAGE_HASHING   = SHA1
-LINE_HASHING   = MD5
-COLUMN_HASHING = MD5
 NON_CRYPTO_HASH = XXHASH
-
-SHA1_L = hashlib.sha1
-SHA3_256_L = sha3.keccak_256
-SHA256_L = hashlib.sha256
-MD5_L = hashlib.md5
-XXHASH_L = xxhash.xxh64
-
+CRYPTO_HASH = SHA3_256
+SECURE_FILE_HASH = SHA256
 
 BASE_PATH = "/Users/robin/PycharmProjects/manic"
 MEMFILES_DIR = "memfiles"

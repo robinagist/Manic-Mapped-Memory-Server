@@ -1,25 +1,7 @@
-import hashlib
+from utils import crypto
+from manic import exceptions
 
-
-def hashfile(filename):
-    '''
-    reads the score file and generates a SHA1 hash
-    :param filename: filename to hash
-    :return: the hash value of the file
-    '''
-    BUF_SIZE = 65535*4
-    sha1 = hashlib.sha1()
-
-    with open(filename, 'rb') as f:
-        while True:
-            data = f.read(BUF_SIZE)
-            if not data:
-                break
-            sha1.update(data)
-        return sha1.hexdigest()
-
-
-def verify_file(mapped_file, verifyfile, bypass=False):
+def verify_file(mapped_file, verifyfile):
     '''
     uses the generated hashes to verify that the file is authentic and has not been tampered with
     :param scorefile: full path to the mappedfile
@@ -30,26 +12,29 @@ def verify_file(mapped_file, verifyfile, bypass=False):
     '''
 
     # no verify file configured or missing will bypass the verification
-    if not verifyfile or bypass:
-        return None, bypass
+    if not verifyfile:
+        raise exceptions.ManicVerificationError("verification file not set")
+    try:
+        vf = open(verifyfile, "r")
+    except:
+        raise exceptions.ManicVerificationError("missing or misconfigured verify-hash.txt file")
 
-    vf = open(verifyfile, "r")
     errors = []
 
     # grab the hash
     vf_hash = vf.readline().strip()
-    sf_calculated_hash = hashfile(mapped_file)
+    sf_calculated_hash = crypto.secure_file_hash(mapped_file)
 
     if vf_hash != sf_calculated_hash:
         errors.append(vf_hash)
         errors.append(sf_calculated_hash)
 
-    return errors, bypass
+    return errors
 
 
 # helper - returns the verify file full path
 def verify_filename(config):
-        return config["memmap"]["verifyfile"]
+        return config["verifyfile"]
 
 
 # verification helper -- error blurb
