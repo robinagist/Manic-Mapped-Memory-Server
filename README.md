@@ -16,7 +16,7 @@ At the moment, Manic will only ingest and index delimited text files.
 ## run it!
 
 + clone the repo `git@github.com:robinagist/Manic-Mapped-Memory-Server.git`
-+ high recommended that you run it in virtualenv with at least Python 3.5
++ high recommended that you run Manic in virtualenv with at least Python 3.5
 + install Sanic `pip install sanic`
 + install pysha3 `pip install pysha3`
 + install xxhash `pip install xxhash` 
