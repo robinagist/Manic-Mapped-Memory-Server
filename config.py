@@ -32,7 +32,7 @@ MEMFILES_DIR = "memfiles"
 
 HOST = "0.0.0.0"
 PORT = 5216
-KEEP_ALIVE = 1
+KEEP_ALIVE = 0
 
 
 
