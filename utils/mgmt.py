@@ -10,6 +10,7 @@ def get_mappedfile_configs():
     return response.json(plain_response(cfgs, 0), status=200)
 
 def created_mapped_file():
-    #
     pass
 
+def delete_mapped_file():
+    pass
