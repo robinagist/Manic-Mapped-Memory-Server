@@ -1,0 +1,23 @@
+{
+
+    "id": "callsigns",
+    "pagelocking" : true,
+    "type":"delim",
+    "filepath": "callsigns.txt",
+    "verifyfile": "",
+    "indexes": [{
+        "name": "call",
+        "constraint": "UNIQUE"
+      },
+      { "name": "class",
+        "constraint": null
+      },
+      { "name": "cat",
+        "constraint": null
+      }
+    ],
+    "delimiter":",",
+    "llnf": true,
+    "result-format": "PARSE"
+
+}
