@@ -30,8 +30,8 @@ async def find(request):
 
 # file management methods
 # TODO authentication - session mgmt
-@bp.route("/files", methods=['GET'])
-async def list_files(request):
+@bp.route("/admin/files", methods=['GET'])
+async def list_memmapped_files(request):
     '''
     list the memmapped files
     :param request:
@@ -40,7 +40,40 @@ async def list_files(request):
 
     return get_mappedfile_configs()
 
+@bp.route("/admin/files", methods=['POST'])
+async def create_memmapped_file(request):
+    '''
+    creates a memmapped file configuration
+    :param request:
+    :return:
 
+
+    request data looks like:
+    {"
+
+    '''
+
+    # extract the mapped file configuration from the request
+
+    pass
+
+@bp.route("/admin/files", methods=['DELETE'])
+async def delete_memmapped_file(request):
+    '''
+    delete a memmapped file configuration
+    :param request:
+    :return:
+    '''
+    pass
+
+@bp.route("/admin/restart", methods=["POST"])
+async def restart(request):
+    '''
+    restarts the server
+    :param request:
+    :return:
+    '''
+    pass
 
 
 
