@@ -1,5 +1,6 @@
 from utils.server import check_request
 from utils.helpers import teapot
+from utils.mgmt import get_mappedfile_configs
 import config
 from sanic import Blueprint
 
@@ -27,8 +28,20 @@ async def find(request):
     # lookup the search term
     return request.app.find(idx, st)
 
+# file management methods
+# TODO authentication - session mgmt
+@bp.route("/files", methods=['GET'])
+async def list_files(request):
+    '''
+    list the memmapped files
+    :param request:
+    :return:
+    '''
 
-# app.start(host=config.HOST, port=config.PORT)
+    return get_mappedfile_configs()
+
+
+
 
 
 

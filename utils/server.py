@@ -1,5 +1,4 @@
-import json
-import logging
+
 from sanic.exceptions import SanicException
 from utils import data
 import config
@@ -111,12 +110,3 @@ def scream():
     print("released under the terms and conditions of the MIT Public License")
     print()
 
-
-
-def logging_level(manic_level):
-    if manic_level == "WARN":
-        return logging.WARN
-    if manic_level == "INFO":
-        return logging.INFO
-    if manic_level == "DEBUG":
-        return logging.DEBUG
