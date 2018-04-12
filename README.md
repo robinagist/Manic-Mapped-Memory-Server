@@ -11,7 +11,6 @@ Manic was extracted from an Ethereum oracle project I am working on, and made op
 
 At the moment, Manic will only ingest and index delimited text files.
 
-***Real documentation is in the works, I promise***
 
 ## run it!
 
